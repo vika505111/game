@@ -254,6 +254,15 @@ html, body {
   <div id="score">النتيجة: 0</div>
 </div>
 <script>
+  function resizeGameArea() {
+    const game = document.getElementById("game");
+    game.style.width = window.innerWidth + "px";
+    game.style.height = window.innerHeight + "px";
+  }
+
+  window.addEventListener("resize", resizeGameArea);
+  window.addEventListener("orientationchange", resizeGameArea);
+  window.addEventListener("load", resizeGameArea);
   const game = document.getElementById("game");
   const player = document.getElementById("player");
   const face = document.getElementById("face");
