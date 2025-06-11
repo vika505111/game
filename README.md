@@ -1,2 +1,506 @@
-# game
-game
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>دڨلة بوراص 😂</title>
+  <style>
+  .controls {
+  position: fixed;
+  bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 1000;
+  pointer-events: none; /* حتى لا تغطي عناصر اللعبة */
+}
+
+.left-controls,
+.right-controls {
+  display: flex;
+  gap: 10px;
+  pointer-events: auto; /* لتفعيل الأزرار فقط */
+}
+
+.left-controls {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+}
+
+.right-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+/* شكل الأزرار */
+.controls button {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  font-size: 32px;
+  border: none;
+  background-color: transparent !important;
+  color: white !important;
+}
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #87CEEB;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    #game {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-image: linear-gradient(#87CEEB, #ffffff);
+    }
+
+    .ground {
+      position: absolute;
+      width: 100%;
+      height: 100px;
+      background-color: #228B22;
+      bottom: 0;
+      z-index: 1;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><rect width="20" height="20" fill="%23175a0f"/><rect x="0" y="15" width="20" height="5" fill="%2333aa33"/></svg>');
+    }
+
+    .player {
+  position: absolute;
+  width: 60px;
+  height: 80px;
+  background-image: url('https://i.postimg.cc/ZRN3NvkR/1000009554-removebg-preview.png');
+  background-size: cover;
+  background-position: center;
+  background-color: transparent;
+  border-radius: 10px;
+  z-index: 5;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.1s;
+  filter: drop-shadow(0 0 0 transparent);
+}
+
+    .jumping {
+      transform: translateY(-10px) scaleY(0.9);
+    }
+
+    .face {
+      position: absolute;
+      top: -40px;
+      left: -5px;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid #000;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .face img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    #upload {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 10;
+      padding: 8px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 5px;
+      border: 2px solid #333;
+    }
+
+    .controls {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    .controls button {
+      padding: 15px 20px;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: #333;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      transition: all 0.1s;
+    }
+
+    .controls button:active {
+      background-color: #555;
+      transform: translateY(2px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .platform {
+      position: absolute;
+      width: 120px; /* Increased platform width */
+      height: 20px;
+      background-color: #8B4513;
+      border-radius: 10px;
+      box-shadow: inset 0 -5px 0 rgba(0, 0, 0, 0.2),
+      0 4px 8px rgba(0, 0, 0, 0.3);
+      border: 2px solid #5D2906;
+    }
+
+    #gameOver {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 48px;
+      color: red;
+      font-weight: bold;
+      display: none;
+      z-index: 20;
+      text-align: center;
+      text-shadow: 2px 2px 4px #000;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 30px;
+      border-radius: 15px;
+      border: 3px solid #ff0000;
+    }
+
+    #restartBtn {
+      margin-top: 20px;
+      padding: 15px 30px;
+      font-size: 20px;
+      background-color: #ff0000;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      transition: all 0.2s;
+    }
+
+    #restartBtn:hover {
+      background-color: #ff3333;
+      transform: scale(1.05);
+    }
+
+    #score {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 24px;
+      color: white;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    .cloud {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+  <audio id="jumpSound" src="https://www.soundjay.com/button/beep-07.mp3"></audio>
+<input type="file" id="upload" accept="image/*" style="display: none;">
+<div id="game">
+  <div id="player" class="player">
+    <div class="face" id="face"></div>
+  </div>
+  <div class="ground" id="ground"></div>
+ <div class="controls">
+  <div class="left-controls">
+    <button id="leftBtn">⬅️</button>
+    <button id="rightBtn">➡️</button>
+  </div>
+  <div class="right-controls">
+    <button id="jumpBtn">⬆️</button>
+  </div>
+</div>
+  <div id="gameOver">
+    يا لمبعر<br>
+    <button id="restartBtn">عاود قود </button>
+  </div>
+  <div id="score">النتيجة: 0</div>
+</div>
+<script>
+  const game = document.getElementById("game");
+  const player = document.getElementById("player");
+  const face = document.getElementById("face");
+  const upload = document.getElementById("upload");
+  const ground = document.getElementById("ground");
+  const scoreElement = document.getElementById("score");
+  const leftBtn = document.getElementById("leftBtn");
+  const rightBtn = document.getElementById("rightBtn");
+  const jumpBtn = document.getElementById("jumpBtn");
+  const gameOverDiv = document.getElementById("gameOver");
+  const restartBtn = document.getElementById("restartBtn");
+
+  let posX = 100;
+  let posY = 0;
+  let velocityY = 0;
+  let isOnGround = true;
+  let cameraOffset = 0;
+  let isGameOver = false;
+  let score = 0;
+  let movingLeft = false;
+  let movingRight = false;
+  let jumpRequested = false;
+  let jumpSoundEnabled = false;
+
+  let jumpCooldown = 0;
+  const gravity = 1;
+  const jumpPower = 16; // Reduced jump power
+  const moveSpeed = 4; // Reduced move speed
+  const platforms = [];
+  const clouds = [];
+
+  function createClouds() {
+    for (let i = 0; i < 5; i++) {
+      const cloud = document.createElement("div");
+      cloud.classList.add("cloud");
+
+      const size = 80 + Math.random() * 100;
+      cloud.style.width = size + "px";
+      cloud.style.height = size / 2 + "px";
+
+      const x = Math.random() * window.innerWidth;
+      const y = 150 + Math.random() * (window.innerHeight - 300);
+
+      cloud.style.left = x + "px";
+      cloud.style.top = y + "px";
+
+      game.appendChild(cloud);
+      clouds.push({elem: cloud, x: x, y: y});
+    }
+  }
+
+  function createPlatforms() {
+  for (let i = 1; i <= 200; i++) {
+    const platElem = document.createElement("div");
+    platElem.classList.add("platform");
+    const x = Math.random() * (window.innerWidth - 120); // Adjusted for new platform width
+    const y = 80 * i + Math.random() * 40; // تقليل المسافة بين المنصات
+    platElem.style.left = x + "px";
+    platElem.style.bottom = y + "px";
+    game.appendChild(platElem);
+    platforms.push({elem: platElem, originalBottom: y, touched: false});
+  }
+}
+
+  function resetGame() {
+    posX = 100;
+    posY = 0;
+    velocityY = 0;
+    isOnGround = true;
+    cameraOffset = 0;
+    isGameOver = false;
+    score = 0;
+    scoreElement.textContent = "النتيجة: 0";
+    movingLeft = false;
+    movingRight = false;
+    jumpRequested = false;
+    jumpCooldown = 0; // Reset cooldown on game restart
+face.innerHTML = '<img src="https://i.postimg.cc/xdnFtmyX/IMG-20250611-181140.jpg" alt="face">';
+    player.style.left = posX + "px";
+    player.style.bottom = "100px";
+    player.classList.remove("jumping");
+    gameOverDiv.style.display = "none";
+  
+    platforms.forEach(p => p.elem.remove());
+    platforms.length = 0;
+    clouds.forEach(c => c.elem.remove());
+    clouds.length = 0;
+    createClouds();
+    createPlatforms();
+    requestAnimationFrame(gameLoop);
+  }
+
+  function gameLoop() {
+    if (isGameOver) return;
+
+    if (jumpCooldown > 0) {
+      jumpCooldown--;
+    }
+
+    clouds.forEach(cloud => {
+      cloud.x = (cloud.x + 0.05) % window.innerWidth;
+      cloud.elem.style.left = cloud.x + "px";
+    });
+
+    if (movingLeft) posX -= moveSpeed;
+    if (movingRight) posX += moveSpeed;
+
+    posX = Math.max(0, Math.min(window.innerWidth - player.offsetWidth, posX));
+    player.style.left = posX + "px";
+
+    if (jumpRequested && isOnGround && jumpCooldown === 0) {
+      velocityY = jumpPower;
+      isOnGround = false;
+      jumpRequested = false;
+      jumpCooldown = 10; // Cooldown to prevent immediate re-jumping
+      player.classList.add("jumping");
+    }
+
+    velocityY -= gravity;
+    posY += velocityY;
+
+    isOnGround = false; // Reset each frame, re-evaluated below.
+
+    platforms.forEach(({elem, originalBottom}) => {
+      const platTop = originalBottom + 20;
+      const platLeft = parseInt(elem.style.left);
+      const platRight = platLeft + elem.offsetWidth;
+      const playerBottom = 100 + posY;
+      const playerLeft = posX;
+      const playerRight = posX + player.offsetWidth;
+      const playerPrevBottom = 100 + posY - velocityY;
+
+      if (
+        velocityY <= 0 &&
+        playerPrevBottom >= platTop &&
+        playerBottom <= platTop &&
+        playerRight > platLeft + 10 &&
+        playerLeft < platRight - 10
+      ) {
+        posY = platTop - 100; // Correct position relative to platform
+        velocityY = 0;
+        isOnGround = true;
+        jumpRequested = false;
+        player.classList.remove("jumping");
+
+        // Scoring (move inside the collision detection)
+        if (platTop - cameraOffset > window.innerHeight - 200) {
+          score += 10;
+          scoreElement.textContent = "النتيجة: " + score;
+        }
+
+        return; // Important: Exit the loop after collision
+      }
+    });
+
+    if (posY <= 0 && !isOnGround) {
+      posY = 0;
+      velocityY = 0;
+      isOnGround = true;
+      jumpRequested = false;
+      player.classList.remove("jumping");
+    }
+
+    const screenHeight = window.innerHeight;
+    const playerScreenY = 100 + posY - cameraOffset;
+
+    if (playerScreenY + player.offsetHeight < 0) {
+      isGameOver = true;
+      gameOverDiv.style.display = "block";
+      return;
+    }
+
+    if (playerScreenY > screenHeight / 2) {
+      cameraOffset = 100 + posY - screenHeight / 2;
+    }
+
+    player.style.bottom = (100 + posY - cameraOffset) + "px";
+    platforms.forEach(p => {
+      p.elem.style.bottom = (p.originalBottom - cameraOffset) + "px";
+    });
+
+    if (cameraOffset > 100) {
+      ground.style.display = "none";
+    } else {
+      ground.style.display = "block";
+      ground.style.bottom = -cameraOffset + "px";
+    }
+
+    requestAnimationFrame(gameLoop);
+  }
+
+  upload.addEventListener("change", (e) => {
+    const file = upload.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        face.innerHTML = `<img src="${event.target.result}" />`;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  function setupHoldButton(btn, onStart, onEnd) {
+    btn.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      onStart();
+    });
+
+    btn.addEventListener("touchend", (e) => {
+      e.preventDefault();
+      onEnd();
+    });
+
+    btn.addEventListener("mousedown", onStart);
+    btn.addEventListener("mouseup", onEnd);
+    btn.addEventListener("mouseleave", onEnd);
+  }
+
+  setupHoldButton(leftBtn, () => movingLeft = true, () => movingLeft = false);
+  setupHoldButton(rightBtn, () => movingRight = true, () => movingRight = false);
+
+  jumpBtn.addEventListener("click", () => {
+  if (isOnGround && jumpCooldown === 0) {
+    jumpRequested = true;
+
+    const jumpSound = document.getElementById("jumpSound");
+    if (jumpSound) {
+      jumpSound.currentTime = 0; // يعيد الصوت للبداية
+      jumpSound.play(); // تشغيل الصوت
+    }
+  }
+});
+
+  jumpBtn.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  if (isOnGround && jumpCooldown === 0) {
+    jumpRequested = true;
+
+    const jumpSound = document.getElementById("jumpSound");
+    if (jumpSound) {
+      jumpSound.currentTime = 0;
+      jumpSound.play();
+    }
+  }
+});
+
+  restartBtn.addEventListener("click", resetGame);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') movingLeft = true;
+    if (e.key === 'ArrowRight') movingRight = true;
+    if (e.key === 'ArrowUp' && isOnGround && jumpCooldown === 0) {
+      jumpRequested = true;
+    }
+  });
+
+  document.addEventListener('keyup', (e) => {
+    if (e.key === 'ArrowLeft') movingLeft = false;
+    if (e.key === 'ArrowRight') movingRight = false;
+  });
+
+  resetGame();
+</script>
+</body>
+</html>
