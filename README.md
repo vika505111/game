@@ -4,6 +4,21 @@
   <meta charset="UTF-8">
   <title>دڨلة بوراص 😂</title>
   <style>
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
+#game {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background-color: #87CEEB;
+}
   .controls {
   position: fixed;
   bottom: 20px;
